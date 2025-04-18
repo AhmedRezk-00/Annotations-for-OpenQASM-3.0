@@ -12,7 +12,7 @@ from qiskit_ibm_runtime import QiskitRuntimeService, Sampler
 from qiskit import QuantumCircuit, transpile
 from qiskit.qasm3 import loads
 
-service = QiskitRuntimeService(channel="ibm_quantum", token="1c92add788b20558283d19a9322d308c8ed46e82f9b06d8b5e38ae680fed99291a9b1a17d7a24703d075222093e134ba0c65693f09dfea3197fca8fa8db29301")
+service = QiskitRuntimeService(channel="ibm_quantum", token="INSERT TOKEN")
 with open('Example_Usecase/test_circuit.qasm', 'r') as f:
     qasm_str = f.read()
 
