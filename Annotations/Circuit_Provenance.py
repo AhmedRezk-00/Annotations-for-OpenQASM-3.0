@@ -25,7 +25,6 @@ class Circuit_Provenance:
     
 
     def get_qpu_url(self,backend):
-            available_computer = []
             r = requests.get("http://localhost:5020/qprov/providers")
             r.raise_for_status()
             providers = r.json()["_embedded"]["providerDtoes"]
@@ -39,19 +38,19 @@ class Circuit_Provenance:
                         if qpu["name"] == backend:
                             return qpu["_links"]["self"]["href"]
 
-#this method returns the physical qbits and the gates that has been used for transpilation 
+#this method returns the list of physical qbits and the  list of  gates that has been used for transpilation 
+#this method is exclusive for Qiskit. Consider changing it for other frameworks.
     def transpiled_circuit_information(self,transpiled):
         used_qubits = set()    
         qubit_gates = {} 
         for instruction in transpiled.data:
             gate_name = instruction.operation.name
             qubits = instruction.qubits
-            physical_qubits = [qubit._index for qubit in qubits]
-            used_qubits.update(physical_qubits)
-            gate_label = f"{gate_name}{physical_qubits}" if len(physical_qubits) > 1 else gate_name
-            for qubit in physical_qubits:
-                qubit_gates.setdefault(qubit, []).append(gate_label)
-                            
+            for qubit in qubits:
+                physical_qubit = qubit._index 
+                used_qubits.add(physical_qubit)
+                gate_label = gate_name
+                qubit_gates.setdefault(physical_qubit, set()).add(gate_label)
         return sorted(list(used_qubits)), qubit_gates
 
 #returns only a list of physical qbits that has been used for transpilation 
@@ -64,7 +63,7 @@ class Circuit_Provenance:
         qubit_gates = self.transpiled_circuit_information(transpiled)
         qubit_gates= qubit_gates[1]
         if qubit in qubit_gates:
-           return list(dict.fromkeys(qubit_gates[qubit]))  
+           return qubit_gates[qubit]
         return []
 
 #List of complete QProv URLs for the qubit ID
@@ -122,7 +121,7 @@ class Circuit_Provenance:
         
         return characteristics_dict
 
-
+    #dictionary containing qubit names and their gate characteristics
     def get_gate_characteristics(self,backend, transpiled):
         qubit_urls = self.get_qubit_ids(backend, transpiled)
         qubit_gate_characteristics = {}
@@ -138,10 +137,7 @@ class Circuit_Provenance:
                 qubit_gate_times = []
                 qubit_gate_fidelities = []
                 
-                used_gates = self.get_qubit_gates(transpiled, int(qubit_name.split(' ')[1]))
-                gates = []
-                for gate in used_gates:
-                    gates.append(gate.split('[')[0])
+                gates= self.get_qubit_gates(transpiled, int(qubit_name.split(' ')[1]))
                 
                 gates_url = f"{qubit_url}/gates"
                 r = requests.get(gates_url)
@@ -185,6 +181,7 @@ class Circuit_Provenance:
         
         return qubit_gate_characteristics
 
+    #dictionary containing QPU name and its provenance metrics
     def get_qpu_provenance(self,backend):
         qpu_url = self.get_qpu_url(backend)
         r = requests.get(qpu_url)
@@ -204,6 +201,7 @@ class Circuit_Provenance:
     
         return provenance_metrics
 
+    #returns the calibration matrix for a specific quantum computer
     def get_calibration_matrix(self,backend):
         r = requests.get("http://localhost:5020/qprov/providers")
         r.raise_for_status()

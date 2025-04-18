@@ -1,6 +1,5 @@
 class Execution_Annotation:
-    def check_execution_annotations(self, qasm_string, counts):
-        """Check QASM string for execution annotations and apply corresponding formatting"""
+    def check_execution_annotations(self, qasm_string, counts): 
         results = {}
 
         if "@reverse_bitString" in qasm_string:

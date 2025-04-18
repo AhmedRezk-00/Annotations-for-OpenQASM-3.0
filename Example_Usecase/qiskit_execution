@@ -23,7 +23,7 @@ print( "Annotation chose: ", qpu_name)
 
 
 circuit = loads(qasm_str)
-backend = service.backend('ibm_sherbrooke')
+backend = service.backend(qpu_name)
 transpiled_circuit = transpile(circuit, backend)
 print(backend.name)
 
