@@ -2,16 +2,15 @@
 
 ## Overview
 
-This project provides a set of Python modules designed extend OpenQASM 3.0 circuits through annotations. These annotations allow for the selection of quantum processing units (QPUs), execution modifications, and circuit provenance tracking.
+This project provides a set of Python modules designed to extend OpenQASM 3.0 circuits through annotations. These annotations allow for the selection of quantum processing units (QPUs), execution modifications, and circuit provenance tracking.
 
 ## QPROV Service
 
-This project relies on a local QPROV service to fetch information about available QPUs and their characteristics. The service is expected to be running at `http://localhost:5020/qprov`. Ensure that this service is active and accessible for the modules to function correctly. The QPROV service can be found on GitHub at [UST-QuAntiL/quantil-docker](https://github.com/UST-QuAntiL/quantil-docker).
+This project relies on a local QPROV service to fetch information about available QPUs and their characteristics. The service is expected to be running at `http://localhost:5020/qprov`. Ensure that this service is active and accessible for the modules to function correctly. The QProv service can be found on GitHub at [UST-QuAntiL/quantil-docker](https://github.com/UST-QuAntiL/quantil-docker).
 
 ## Modules
 
 ### QPU_Selection(As A Proof Of Concept!)
-
 - **Purpose**: Selects a QPU based on user-defined criteria such as the minimum number of qubits and specific performance metrics.
 - **Key Functions**:
   - `check_qpu_annotations`: Parses OpenQASM strings to identify and process QPU selection annotations.
@@ -20,11 +19,11 @@ This project relies on a local QPROV service to fetch information about availabl
 
 ### Execution_Annotation
 
-- **Purpose**: Modifies the execution of quantum circuits based on annotations for bitstring manipulation and formatting.
+- **Purpose**: bitstring manipulation and formatting for results of OpenQASM 3 circuits 
 - **Key Functions**:
   - `check_execution_annotations`: Identifies and applies execution-related annotations in OpenQASM strings.
   - `reverse_bitString`: Reverses the bitstrings in the measurement results.
-  - `format_counts_hex` and `format_counts_decimal`: Formats the measurement results into hexadecimal and decimal representations, respectively.
+  - `format_counts_hex` and `format_counts_decimal`: Format the measurement results into hexadecimal and decimal representations, respectively.
 
 ### Circuit_Provenance
 
@@ -37,7 +36,7 @@ This project relies on a local QPROV service to fetch information about availabl
 
 ## Example Use Case
 
-The `Example_Usecase` directory contains a sample OpenQASM file (`test_circuit.qasm`) and its corresponding output (`example_output.txt`). This example demonstrates how annotations can be used to select a QPU, retrieve qubit and gate characteristics, and format execution results and where exatly to integrate it in the execution pipeline.
+The `Example_Usecase` directory contains a sample OpenQASM file (`test_circuit.qasm`) and its corresponding output (`example_output.txt`). This example (`qiskit_execution.py`) demonstrates how annotations can be used to select a QPU, retrieve qubit and gate characteristics, and format execution results, as well as where to integrate them into the execution pipeline.
 
 ## Getting Started
 1. **Dependencies**: 
