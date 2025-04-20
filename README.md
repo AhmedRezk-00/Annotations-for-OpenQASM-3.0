@@ -16,6 +16,20 @@ This project relies on a local QPROV service to fetch information about availabl
   - `check_qpu_annotations`: Parses OpenQASM strings to identify and process QPU selection annotations.
   - `get_all_qpu`: Retrieves a list of available QPUs from IBM.
   - `select_qpu`: Filters and selects the best QPU based on the specified criteria.
+ 
+- **Add this annotation to automatically select a quantum computer based on your requirements:**
+
+  - `@select_qpu(min_qubits, metric)`: Selects the best QPU based on specified criteria
+  - `min_qubits`: Minimum number of qubits required
+  - **Available optimization metrics:** 
+    - `max_gate_time`: Maximum gate time
+    - `t1_time`: Average T1 relaxation time 
+    - `t2_time`: Average T2 coherence time
+    - `readout_error`: Average readout error rate
+    - `multi_qubit_gate_error`: Average multi-qubit gate error rate
+    - `single_qubit_gate_error`: Average single-qubit gate error rate
+    - `average_multi_qubit_gate_time`: Average time for multi-qubit gates
+    - `average_single_qubit_gate_time`: Average time for single-qubit gates
 
 ### Execution_Annotation
 
@@ -24,6 +38,11 @@ This project relies on a local QPROV service to fetch information about availabl
   - `check_execution_annotations`: Identifies and applies execution-related annotations in OpenQASM strings.
   - `reverse_bitString`: Reverses the bitstrings in the measurement results.
   - `format_counts_hex` and `format_counts_decimal`: Format the measurement results into hexadecimal and decimal representations, respectively.
+ 
+- **Add these annotations to process your circuit execution results:**
+   - `@reverse_bitString`: Reverses the bit strings in the measurement results
+   - `@format_to_hex`: Converts measurement results to hexadecimal representation
+   - `@format_to_dec`: Converts measurement results to decimal representation
 
 ### Circuit_Provenance
 
@@ -33,6 +52,12 @@ This project relies on a local QPROV service to fetch information about availabl
   - `get_qubit_characteristics` and `get_gate_characteristics`: Retrieves detailed characteristics of qubits and gates used in the circuit.
   - `get_qpu_provenance`: Fetches provenance metrics for the selected QPU.
   - `get_calibration_matrix`: Returns the calibration matrix for a specific quantum computer.
+- **Add these annotations to your QASM code to get information about the quantum hardware:**
+
+   - `@get_qubit_characteristics`: Returns characteristics of the qubits used in your circuit (T1 time, T2 time, readout error)
+   - `@get_gate_characteristics`: Returns characteristics of the gates used in your circuit (gate time, gate fidelity)
+   - `@get_qpu`: Returns detailed information about the quantum computer being used
+   - `@get_calibration_matrix`: Returns the calibration matrix for the quantum computer
 
 ## Example Use Case
 
